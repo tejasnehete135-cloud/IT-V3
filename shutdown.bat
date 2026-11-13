@@ -1,13 +1,22 @@
 @echo off
-setlocal
+setlocal EnableExtensions
 set "ROOT=%~dp0"
 set "PORT=5000"
-for /f "tokens=1,* delims==" %%A in ('findstr /b "HELPDESK_PORT=" "%ROOT%.env" 2^>nul') do set "PORT=%%B"
+set "LM_STUDIO_EXE=C:\Program Files\LM Studio\LM Studio.exe"
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$root = '%ROOT%'; $listeners = Get-NetTCPConnection -LocalPort %PORT% -State Listen -ErrorAction SilentlyContinue; $stopped = $false; foreach ($listener in $listeners) { $process = Get-CimInstance Win32_Process -Filter ('ProcessId = ' + $listener.OwningProcess); if ($process.CommandLine -and $process.CommandLine.IndexOf($root, [StringComparison]::OrdinalIgnoreCase) -ge 0 -and $process.CommandLine -match 'backend[\\/]+app\.py') { Stop-Process -Id $process.ProcessId -Force -ErrorAction Stop; Write-Output 'Campus Helpdesk stopped.'; $stopped = $true } }; if (-not $stopped) { Write-Output 'No Campus Helpdesk process for this project was found on port %PORT%.' }"
+if exist "%ROOT%.env" (
+    for /f "usebackq tokens=1,* delims==" %%A in ("%ROOT%.env") do (
+        if /I "%%A"=="HELPDESK_PORT" set "PORT=%%B"
+        if /I "%%A"=="LM_STUDIO_EXE" set "LM_STUDIO_EXE=%%B"
+    )
+)
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$root = '%ROOT%'; $port = '%PORT%'; $lmStudio = '%LM_STUDIO_EXE%'; $projectProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -and $_.CommandLine.IndexOf($root, [System.StringComparison]::OrdinalIgnoreCase) -ge 0 -and $_.CommandLine -match 'backend[\\/]+app\.py' }; if ($projectProcesses) { foreach ($process in $projectProcesses) { Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue; Write-Output 'Campus Helpdesk stopped.' } } else { Write-Output ('No Campus Helpdesk process for this project was found on port ' + $port + '.') }; $lmProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -and $_.CommandLine.IndexOf($lmStudio, [System.StringComparison]::OrdinalIgnoreCase) -ge 0 }; if ($lmProcesses) { foreach ($process in $lmProcesses) { Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue; Write-Output 'LM Studio stopped.' } }"
+
 if errorlevel 1 (
-    echo Could not stop the helpdesk. Try running shutdown.bat with the same permissions used to start it.
+    echo Could not stop the helpdesk or LM Studio. Try running shutdown.bat with the same permissions used to start it.
     pause
     exit /b 1
 )
+
 endlocal
