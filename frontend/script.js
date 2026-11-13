@@ -1,253 +1,217 @@
 (() => {
-  const form = document.querySelector("#chat-form");
-  const input = document.querySelector("#message-input");
-  const sendButton = document.querySelector("#send-button");
-  const conversation = document.querySelector("#conversation");
-  const typing = document.querySelector("#typing-indicator");
-  const connectionStatus = document.querySelector("#connection-status");
-  const connectionLabel = document.querySelector("#connection-label");
-  const quickReplies = document.querySelector("#quick-replies");
-  const themeToggle = document.querySelector("#theme-toggle");
-  const welcomeTime = document.querySelector("#welcome-time");
-  const history = [];
-  let busy = false;
+    const form = document.getElementById("chat-form");
+    const chatBox = document.getElementById("chatBox");
+    const input = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+    const typingIndicator = document.getElementById("typing-indicator");
+    const quickReplies = document.getElementById("quick-replies");
+    const connectionStatus = document.getElementById("connection-status");
+    const connectionLabel = document.getElementById("connection-label");
+    const themeToggle = document.getElementById("theme-toggle");
+    const conversationHistory = [];
+    let isProcessing = false;
 
-  const timeNow = () => new Intl.DateTimeFormat([], {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date());
-
-  welcomeTime.dateTime = new Date().toISOString();
-  welcomeTime.textContent = timeNow();
-
-  function appendInlineMarkdown(element, text) {
-    const pattern = /\*\*(.+?)\*\*/g;
-    let cursor = 0;
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      element.append(document.createTextNode(text.slice(cursor, match.index)));
-      const strong = document.createElement("strong");
-      strong.textContent = match[1];
-      element.append(strong);
-      cursor = pattern.lastIndex;
+    function currentTime() {
+        return new Intl.DateTimeFormat(undefined, {
+            hour: "numeric",
+            minute: "2-digit",
+        }).format(new Date());
     }
-    element.append(document.createTextNode(text.slice(cursor)));
-  }
 
-  function appendFormattedReply(container, text) {
-    let list = null;
-    let listType = "";
-    text.split(/\r?\n/).forEach((line) => {
-      const unordered = line.match(/^\s*[-*]\s+(.+)$/);
-      const ordered = line.match(/^\s*\d+[.)]\s+(.+)$/);
-      const item = unordered || ordered;
-      if (item) {
-        const nextType = unordered ? "ul" : "ol";
-        if (!list || listType !== nextType) {
-          list = document.createElement(nextType);
-          listType = nextType;
-          container.append(list);
+    const welcomeTime = chatBox.querySelector(".message-time");
+    welcomeTime.dateTime = new Date().toISOString();
+    welcomeTime.textContent = currentTime();
+
+    function scrollToLatest() {
+        chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: "smooth" });
+    }
+
+    function appendMessage(role, text) {
+        const row = document.createElement("article");
+        row.className = `message-row ${role}-row`;
+
+        const bubble = document.createElement("div");
+        bubble.className = `message ${role}-message`;
+        bubble.append(document.createTextNode(text));
+
+        const timestamp = document.createElement("time");
+        timestamp.className = "message-time";
+        timestamp.dateTime = new Date().toISOString();
+        timestamp.textContent = currentTime();
+        bubble.append(timestamp);
+
+        row.append(bubble);
+        chatBox.insertBefore(row, typingIndicator);
+        scrollToLatest();
+    }
+
+    function setProcessing(processing) {
+        isProcessing = processing;
+        input.disabled = processing;
+        sendButton.disabled = processing;
+        quickReplies.querySelectorAll("button").forEach((button) => {
+            button.disabled = processing;
+        });
+        typingIndicator.hidden = !processing;
+
+        if (processing) {
+            scrollToLatest();
         }
-        const listItem = document.createElement("li");
-        appendInlineMarkdown(listItem, item[1]);
-        list.append(listItem);
-        return;
-      }
-      list = null;
-      listType = "";
-      if (!line.trim()) return;
-      const paragraph = document.createElement("p");
-      appendInlineMarkdown(paragraph, line);
-      container.append(paragraph);
+    }
+
+    async function loadQuickReplies() {
+        const fallbackQuestions = [
+            { label: "Admissions", question: "How do I apply for an undergraduate program?" },
+            { label: "Fees", question: "What is the annual B.Tech tuition fee?" },
+            { label: "Exams", question: "When are the semester exams?" },
+            { label: "Timetable", question: "What is the weekly class schedule?" },
+            { label: "Events & Clubs", question: "What clubs and campus events are available?" },
+            { label: "Contact Office", question: "How can I contact the Campus Helpdesk?" },
+        ];
+
+        try {
+            const response = await fetch("/api/quick-questions", {
+                headers: { Accept: "application/json" },
+            });
+            if (!response.ok) {
+                throw new Error("Quick questions unavailable.");
+            }
+            const items = await response.json();
+            if (!Array.isArray(items) || !items.length) {
+                throw new Error("Quick questions payload was empty.");
+            }
+            renderQuickReplies(items);
+            return;
+        } catch {
+            renderQuickReplies(fallbackQuestions);
+        }
+    }
+
+    function renderQuickReplies(items) {
+        quickReplies.innerHTML = "";
+        items.forEach((item) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "quick-reply";
+            button.textContent = item.label;
+            button.dataset.question = item.question || item.label;
+            quickReplies.append(button);
+        });
+    }
+
+    async function checkHealth() {
+        try {
+            const response = await fetch("/api/health", {
+                headers: { Accept: "application/json" },
+            });
+            if (!response.ok) {
+                throw new Error(`Health check failed with status ${response.status}.`);
+            }
+
+            const health = await response.json();
+            if (health.status !== "ok") {
+                throw new Error("Helpdesk health check returned an unexpected status.");
+            }
+
+            connectionStatus.classList.remove("checking", "offline");
+            connectionStatus.classList.add("online");
+            connectionLabel.textContent = "Online";
+        } catch {
+            connectionStatus.classList.remove("checking", "online");
+            connectionStatus.classList.add("offline");
+            connectionLabel.textContent = "Offline";
+        }
+    }
+
+    async function sendMessage(message = input.value) {
+        const question = message.trim();
+        if (!question || isProcessing) {
+            return;
+        }
+
+        appendMessage("user", question);
+        input.value = "";
+        setProcessing(true);
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    message: question,
+                    history: conversationHistory.slice(-5),
+                }),
+            });
+
+            let payload;
+            try {
+                payload = await response.json();
+            } catch {
+                throw new Error("The helpdesk returned an unreadable response. Please try again.");
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    typeof payload.error === "string"
+                        ? payload.error
+                        : "Something went wrong. Please try again.",
+                );
+            }
+
+            if (typeof payload.reply !== "string" || !payload.reply.trim()) {
+                throw new Error("The helpdesk did not return an answer. Please try again.");
+            }
+
+            appendMessage("bot", payload.reply);
+            conversationHistory.push(
+                { role: "user", content: question },
+                { role: "assistant", content: payload.reply },
+            );
+        } catch (error) {
+            const errorMessage = error instanceof TypeError
+                ? "I could not connect to Campus Helpdesk. Please check that the helpdesk is online and try again."
+                : error instanceof Error
+                    ? error.message
+                    : "I could not connect to the helpdesk. Please try again.";
+            appendMessage("bot", errorMessage);
+        } finally {
+            setProcessing(false);
+            input.focus();
+        }
+    }
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendMessage();
     });
-  }
 
-  function appendMessage(role, text, category = "", sources = [], source = "") {
-    const article = document.createElement("article");
-    article.className = `message ${role === "user" ? "user-message" : "bot-message"}`;
-    const avatar = document.createElement("div");
-    avatar.className = "message-avatar";
-    avatar.setAttribute("aria-hidden", "true");
-    avatar.textContent = role === "user" ? "Y" : "C";
+    quickReplies.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (button && quickReplies.contains(button)) {
+            sendMessage(button.dataset.question || button.textContent);
+        }
+    });
 
-    const content = document.createElement("div");
-    content.className = "message-content";
-    const meta = document.createElement("div");
-    meta.className = "message-meta";
-    const name = document.createElement("strong");
-    name.textContent = role === "user" ? "You" : "Campus";
-    const time = document.createElement("time");
-    time.dateTime = new Date().toISOString();
-    time.textContent = timeNow();
-    meta.append(name, time);
-
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    if (role === "assistant") appendFormattedReply(bubble, text);
-    else {
-      const paragraph = document.createElement("p");
-      paragraph.textContent = text;
-      bubble.append(paragraph);
-    }
-    if (role === "assistant" && category) {
-      const tag = document.createElement("span");
-      tag.className = "category-tag";
-      tag.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-      bubble.append(tag);
-    }
-    if (role === "assistant" && source) {
-      const sourceTag = document.createElement("span");
-      sourceTag.className = `source-mode ${source}`;
-      sourceTag.textContent = source === "fallback" ? "Campus data · offline answer" : "AI answer · Campus data";
-      bubble.append(sourceTag);
-    }
-    if (role === "assistant" && sources.length) {
-      const sourceList = document.createElement("div");
-      sourceList.className = "source-list";
-      sourceList.setAttribute("aria-label", "Answer sources");
-      sources.forEach((source) => {
-        const tag = document.createElement("span");
-        tag.className = "source-tag";
-        tag.textContent = source.title || source.category || "College data";
-        sourceList.append(tag);
-      });
-      bubble.append(sourceList);
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            const isDark = document.documentElement.dataset.theme !== "dark";
+            document.documentElement.dataset.theme = isDark ? "dark" : "light";
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light theme" : "Switch to dark theme",
+            );
+            themeToggle.title = isDark ? "Switch to light theme" : "Switch to dark theme";
+            const icon = themeToggle.querySelector("span");
+            if (icon) {
+                icon.textContent = isDark ? "☀" : "☾";
+            }
+        });
     }
 
-    content.append(meta, bubble);
-    article.append(...(role === "user" ? [content, avatar] : [avatar, content]));
-    conversation.insertBefore(article, typing);
-    conversation.scrollTop = conversation.scrollHeight;
-  }
-
-  function setBusy(value) {
-    busy = value;
-    sendButton.disabled = value || !input.value.trim();
-    input.disabled = value;
-    typing.hidden = !value;
-    if (value) conversation.scrollTop = conversation.scrollHeight;
-  }
-
-  async function sendMessage(text) {
-    const message = text.trim();
-    if (!message || busy) return;
-    appendMessage("user", message);
-    quickReplies.remove();
-    const requestHistory = history.slice(-5);
-    history.push({ role: "user", content: message });
-    input.value = "";
-    input.style.height = "auto";
-    setBusy(true);
-
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history: requestHistory }),
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || "Something went wrong. Please try again.");
-      appendMessage("assistant", payload.reply, payload.category, [], payload.source);
-      history.push({ role: "assistant", content: payload.reply });
-    } catch (error) {
-      appendMessage(
-        "assistant",
-        error instanceof TypeError
-          ? "I couldn't connect to the helpdesk server. Please make sure the backend is running and try again."
-          : error.message,
-      );
-    } finally {
-      setBusy(false);
-      input.focus();
-    }
-  }
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    sendMessage(input.value);
-  });
-  input.addEventListener("input", () => {
-    input.style.height = "auto";
-    input.style.height = `${Math.min(input.scrollHeight, 110)}px`;
-    sendButton.disabled = busy || !input.value.trim();
-  });
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      form.requestSubmit();
-    }
-  });
-  quickReplies.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-question]");
-    if (button) sendMessage(button.dataset.question);
-  });
-  document.querySelector("#clear-chat").addEventListener("click", () => window.location.reload());
-
-  async function loadQuickQuestions() {
-    try {
-      const response = await fetch("/api/quick-questions");
-      if (!response.ok) throw new Error(`Quick questions request failed (${response.status}).`);
-      const questions = await response.json();
-      questions.forEach(({ label, question }) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.dataset.question = question;
-        const icon = document.createElement("span");
-        icon.textContent = "›";
-        button.append(icon, document.createTextNode(` ${label}`));
-        quickReplies.append(button);
-      });
-    } catch (error) {
-      console.error("Could not load quick questions:", error);
-    }
-  }
-  loadQuickQuestions();
-
-  function readThemePreference() {
-    try {
-      return localStorage.getItem("helpdesk-theme");
-    } catch {
-      return null;
-    }
-  }
-
-  function saveThemePreference(theme) {
-    try {
-      localStorage.setItem("helpdesk-theme", theme);
-    } catch {
-      // Theme changes still apply for the current page view.
-    }
-  }
-
-  if (readThemePreference() === "dark") document.body.classList.add("dark");
-  function updateThemeButton() {
-    const dark = document.body.classList.contains("dark");
-    themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-    themeToggle.innerHTML = dark
-      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>'
-      : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.3 8.3 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"/></svg>';
-  }
-  updateThemeButton();
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    saveThemePreference(document.body.classList.contains("dark") ? "dark" : "light");
-    updateThemeButton();
-  });
-
-  async function checkHealth() {
-    try {
-      const response = await fetch("/api/health", { cache: "no-store" });
-      const health = await response.json();
-      const online = health.lm_studio === "reachable";
-      connectionStatus.classList.toggle("online", online);
-      connectionStatus.classList.toggle("offline", !online);
-      connectionLabel.textContent = online ? "Online" : "Offline · FAQ fallback available";
-    } catch {
-      connectionStatus.classList.remove("online");
-      connectionStatus.classList.add("offline");
-      connectionLabel.textContent = "Server unavailable";
-    }
-  }
-  checkHealth();
-  window.setInterval(checkHealth, 30000);
+    loadQuickReplies();
+    checkHealth();
 })();

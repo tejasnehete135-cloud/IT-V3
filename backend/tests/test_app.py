@@ -97,7 +97,7 @@ def test_invalid_or_oversized_chat_messages_are_rejected(client):
     assert "2000" in too_long.get_json()["error"]
 
 
-def test_offline_fallback_returns_best_record_and_notice(client):
+def test_offline_fallback_returns_best_record_without_notice(client):
     with patch.object(
         helpdesk_app, "generate_reply", side_effect=LLMUnavailableError("offline")
     ):
@@ -107,7 +107,7 @@ def test_offline_fallback_returns_best_record_and_notice(client):
 
     payload = response.get_json()
     assert response.status_code == 200
-    assert "LM Studio is unavailable" in payload["reply"]
+    assert "LM Studio is unavailable" not in payload["reply"]
     assert "Rs 85,000" in payload["reply"]
     assert payload["category"] == "fees"
     assert payload["source"] == "fallback"
@@ -143,6 +143,22 @@ def test_history_is_limited_to_last_five_messages(client):
     assert retained_history[0]["content"] == "Message 7"
 
 
+def test_follow_up_retrieval_uses_conversation_context(client):
+    history = [
+        {"role": "user", "content": "I want to apply for an undergraduate program."},
+        {"role": "assistant", "content": "I can help with Campus admissions."},
+    ]
+    with patch.object(helpdesk_app, "generate_reply", return_value="At least 50%.") as generate:
+        response = client.post(
+            "/api/chat",
+            json={"message": "What eligibility is required?", "history": history},
+        )
+
+    assert response.status_code == 200
+    retrieved_ids = {record["id"] for record in generate.call_args.args[2]}
+    assert "admissions_003" in retrieved_ids
+
+
 def test_llm_request_has_local_model_and_expected_settings():
     response = type(
         "Response",
@@ -176,8 +192,11 @@ def test_frontend_uses_campus_brand_and_expected_controls(client):
     assert response.status_code == 200
     assert "Campus Helpdesk" in page
     assert "Nagpur" not in page
-    assert "clear-chat" in page
-    assert "theme-toggle" in page
+    assert 'id="chat-form"' in page
+    assert 'id="message-input"' in page
+    assert 'id="typing-indicator"' in page
+    assert 'id="theme-toggle"' in page
+    assert 'id="quick-replies"' in page
     assert client.get("/script.js").status_code == 200
     assert client.get("/style.css").status_code == 200
 

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "admissions_001",
+    "category": "admissions",
+    "keywords": ["undergraduate", "UG", "B.Sc.", "B.Tech", "programs", "courses"],
+    "question": "Which undergraduate programs are offered?",
+    "answer": "Campus offers B.Sc. (3 years) and B.Tech (4 years) undergraduate programs."
+  },
+  {
+    "id": "admissions_002",
+    "category": "admissions",
+    "keywords": ["postgraduate", "PG", "MBA", "M.Sc.", "programs", "courses"],
+    "question": "Which postgraduate programs are offered?",
+    "answer": "Campus offers MBA and M.Sc. postgraduate programs. Both programs are 2 years."
+  },
+  {
+    "id": "admissions_003",
+    "category": "admissions",
+    "keywords": ["eligibility", "UG", "undergraduate", "12th", "marks"],
+    "question": "What is undergraduate eligibility?",
+    "answer": "For undergraduate admission, applicants need to have passed 12th standard with at least 50% aggregate marks. A 5% relaxation applies to reserved-category applicants."
+  },
+  {
+    "id": "admissions_004",
+    "category": "admissions",
+    "keywords": ["eligibility", "PG", "postgraduate", "graduate", "MBA", "M.Sc."],
+    "question": "What is postgraduate eligibility?",
+    "answer": "For postgraduate admission, applicants need a recognized bachelor's degree with at least 50% aggregate marks. A 5% relaxation applies to reserved-category applicants."
+  },
+  {
+    "id": "admissions_005",
+    "category": "admissions",
+    "keywords": ["application", "window", "dates", "June", "July", "deadline"],
+    "question": "When is the application window?",
+    "answer": "The application window is June 1 through July 15."
+  },
+  {
+    "id": "admissions_006",
+    "category": "admissions",
+    "keywords": ["documents", "marksheets", "transcript", "ID", "photos", "admission"],
+    "question": "Which documents are required to apply?",
+    "answer": "Submit 10th and 12th marksheets, a transfer certificate, entrance scorecard (if applicable), government photo ID, two passport photos, and category certificate when applicable."
+  },
+  {
+    "id": "admissions_007",
+    "category": "admissions",
+    "keywords": ["entrance", "merit", "selection", "process", "admission"],
+    "question": "How are applicants selected?",
+    "answer": "Eligible applicants are considered through the applicable entrance-exam score or the published academic merit list. Shortlisted applicants complete document verification before a seat is confirmed."
+  },
+  {
+    "id": "admissions_008",
+    "category": "admissions",
+    "keywords": ["seats", "intake", "capacity", "B.Sc.", "B.Tech", "MBA", "M.Sc."],
+    "question": "How many seats are available?",
+    "answer": "Annual intake: B.Sc. 120 seats, B.Tech 180 seats, MBA 60 seats, and M.Sc. 60 seats."
+  },
+  {
+    "id": "admissions_009",
+    "category": "admissions",
+    "keywords": ["application", "fee", "cost", "pay", "Rs 500"],
+    "question": "What is the application fee?",
+    "answer": "The application fee is Rs 500. The application fee is non-refundable."
+  },
+  {
+    "id": "admissions_010",
+    "category": "admissions",
+    "keywords": ["apply", "online", "portal", "website", "application"],
+    "question": "How do I apply online?",
+    "answer": "Create an account on apply.campus.example, complete the application form, upload the required documents, pay the application fee, and save the submission receipt."
+  },
+  {
+    "id": "admissions_011",
+    "category": "admissions",
+    "keywords": ["admissions", "helpline", "contact", "phone", "email"],
+    "question": "How do I contact the admissions office?",
+    "answer": "Email admissions@campus.example or call +1-555-0101 during office hours."
+  }
+]

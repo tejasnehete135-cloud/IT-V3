@@ -121,11 +121,7 @@ def _contact_fallback() -> str:
 def _fallback_reply(message: str, category: str) -> Tuple[str, str]:
     record = retriever.fallback_answer(message)
     if record:
-        return (
-            "LM Studio is unavailable; here's the closest answer from Campus data:\n\n"
-            + str(record["answer"]),
-            str(record["category"]),
-        )
+        return str(record["answer"]), str(record["category"])
     return _contact_fallback(), category
 
 
@@ -148,11 +144,16 @@ def chat():
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
 
-    chunks = retriever.search(message, top_k=RETRIEVAL_TOP_K)
+    retrieval_query = " ".join(
+        item["content"] for item in history if item.get("role") == "user"
+    )
+    if message:
+        retrieval_query = f"{retrieval_query} {message}".strip()
+    chunks = retriever.search(retrieval_query, top_k=RETRIEVAL_TOP_K)
     category = _detect_category(message, chunks)
     _log_question(message, category)
     if not chunks:
-        reply, category = _fallback_reply(message, category)
+        reply, category = _fallback_reply(retrieval_query, category)
         return jsonify({"reply": reply, "category": category, "source": "fallback"})
 
     try:
@@ -160,7 +161,7 @@ def chat():
         source = "llm"
     except LLMUnavailableError:
         logger.warning("LM Studio unavailable; returning a data-based fallback.")
-        reply, category = _fallback_reply(message, category)
+        reply, category = _fallback_reply(retrieval_query, category)
         source = "fallback"
 
     return jsonify({"reply": reply, "category": category, "source": source})

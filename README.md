@@ -14,29 +14,50 @@ offline notice.
 
 ## Setup and run
 
-1. Install and open LM Studio. In **Discover**, download an instruction model
-   such as Qwen2.5 7B Instruct or Llama 3.1 8B Instruct.
-2. Load the model, open **Local Server**, set port `1234`, and start the server.
-   The OpenAI-compatible endpoint should be
-   `http://localhost:1234/v1/chat/completions`. No API key is needed.
-3. If LM Studio reports another model ID, set `LM_STUDIO_MODEL` in the
-   project-root `.env` file to that ID.
+1. Install and open LM Studio. In **Discover**, download an instruction model,
+   then load it. The default configured model is `qwen/qwen3-4b`.
+2. In LM Studio, start the **Local Server** on port `1234`. The
+   OpenAI-compatible endpoint is
+   `http://localhost:1234/v1/chat/completions`; no API key is needed.
+3. Copy `.env.example` to `.env` in the project root:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   On macOS/Linux, use `cp .env.example .env`. If LM Studio reports a
+   different model ID or server URL, update `LM_STUDIO_MODEL` or
+   `LM_STUDIO_BASE_URL` in `.env`.
 4. From the project root, install dependencies and start Flask:
 
    ```powershell
    py -m venv .venv
    .\.venv\Scripts\Activate.ps1
    py -m pip install -r backend\requirements.txt
+   py -m pip install pytest
+   py -m pytest backend\tests -q
    py backend\app.py
    ```
 
    On macOS/Linux, activate with `source .venv/bin/activate` and use `python`
-   instead of `py`.
+   instead of `py`:
+
+   ```sh
+   python -m venv .venv
+   source .venv/bin/activate
+   python -m pip install -r backend/requirements.txt
+   python -m pytest backend/tests -q
+   python backend/app.py
+   ```
+
 5. Open **http://127.0.0.1:5000**. Flask serves the frontend and API together;
    do not open `frontend/index.html` directly.
 
-On Windows, `boot.bat` starts the app and opens the browser; `shutdown.bat`
-stops this project's server. Both use `HELPDESK_PORT` from `.env` (default
+On Windows, `boot.bat` starts LM Studio, starts the local server, loads the
+configured model, starts the app, and opens the browser. Ensure LM Studio and
+its `lms` CLI are installed; set `LM_STUDIO_EXE` in `.env` if LM Studio is
+installed somewhere other than the default path. `shutdown.bat` stops the
+helpdesk and LM Studio. The scripts use `HELPDESK_PORT` from `.env` (default
 `5000`).
 
 ## Project structure
@@ -60,14 +81,16 @@ frontend/
   index.html
   style.css
   script.js
+.env.example
 logs/                       # Created when the first valid question is asked
 README.md
 ```
 
 Each data file is a JSON array with at least eight records. A record uses
 `id`, `category`, `keywords`, `question`, and `answer`. To update Campus
-knowledge, edit the relevant JSON records and restart the backend. Categories
-are `admissions`, `fees`, `exams`, `timetable`, `events`, and `general`.
+knowledge, edit the relevant JSON records and restart the backend; no source
+code changes are needed. Categories are `admissions`, `fees`, `exams`,
+`timetable`, `events`, and `general`.
 
 ## Configuration
 

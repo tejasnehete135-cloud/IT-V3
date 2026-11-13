@@ -1,80 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7fb">
-  <meta name="description" content="Ask Campus about admissions, fees, exams, timetables, events, and student services.">
-  <title>Campus Smart Student Helpdesk</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="/script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1a56a0">
+    <meta name="description" content="Ask the Campus Helpdesk about college life, student services, and academics.">
+    <title>Campus Helpdesk</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
 </head>
 <body>
-  <main class="app-shell">
-    <aside class="sidebar" aria-label="Helpdesk information">
-      <a class="brand" href="/" aria-label="Campus helpdesk home">
-        <span class="brand-mark" aria-hidden="true">C</span>
-        <span><strong>Campus</strong><small>STUDENT HELP DESK</small></span>
-      </a>
-      <section class="welcome">
-        <span class="eyebrow">STUDENT HELP DESK</span>
-        <h1>Your campus questions, answered.</h1>
-        <p>Find information about admissions, fees, academics, exams, and student life.</p>
-      </section>
-      <div class="sidebar-note">
-        <span class="note-icon" aria-hidden="true">✦</span>
-        <p>Answers are based only on the college information provided to this helpdesk.</p>
-      </div>
-      <div class="sidebar-footer">CAMPUS STUDENT SERVICES</div>
-    </aside>
-
-    <section class="chat-panel" aria-label="Student helpdesk chat">
-      <header class="topbar">
-        <div class="assistant-identity">
-          <span class="avatar" aria-hidden="true">C</span>
-          <span><strong>Campus Helpdesk</strong><small id="connection-status" role="status"><i aria-hidden="true"></i><span id="connection-label">Checking connection…</span></small></span>
-        </div>
-        <div class="topbar-actions">
-          <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle color theme">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.3 8.3 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"/></svg>
-          </button>
-          <button class="clear-button" id="clear-chat" type="button" aria-label="Clear conversation">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>
-            <span>Clear chat</span>
-          </button>
-        </div>
-      </header>
-
-      <div class="conversation" id="conversation" role="log" aria-live="polite" aria-relevant="additions text">
-        <div class="date-divider"><span>CAMPUS HELP DESK</span></div>
-        <article class="message bot-message" id="welcome-message">
-          <div class="message-avatar" aria-hidden="true">C</div>
-          <div class="message-content">
-            <div class="message-meta"><strong>Campus</strong><time id="welcome-time"></time></div>
-            <div class="bubble">
-              <p>Hi! I'm Campus, your student helpdesk. Ask me about admissions, fees, exams, timetables, events, or office contacts.</p>
-              <p class="welcome-prompt">Choose a topic or type your question. I can only answer from the supplied college information.</p>
+    <section class="chat-card" aria-label="Campus Helpdesk student helpdesk">
+        <header class="chat-header">
+            <div class="logo">🎓</div>
+            <div class="brand-copy">
+                <h1>Campus Helpdesk</h1>
+                <p>Student Helpdesk</p>
             </div>
-          </div>
-        </article>
-        <div class="quick-replies" id="quick-replies" aria-label="Suggested questions"></div>
-        <div class="typing-indicator" id="typing-indicator" hidden aria-label="Assistant is typing">
-          <div class="message-avatar" aria-hidden="true">C</div>
-          <div class="typing-dots"><span></span><span></span><span></span></div>
-        </div>
-      </div>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
+                <span aria-hidden="true">☾</span>
+            </button>
+            <div id="connection-status" class="connection-status checking" role="status" aria-live="polite">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="connection-label">Checking</span>
+            </div>
+        </header>
 
-      <form class="composer-wrap" id="chat-form">
-        <label class="sr-only" for="message-input">Your question</label>
-        <div class="composer">
-          <textarea id="message-input" rows="1" maxlength="2000" placeholder="Ask Campus…" required></textarea>
-          <button class="send-button" id="send-button" type="submit" aria-label="Send message" disabled>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-5 14-2-6-7-1Zm7 1 7-8"/></svg>
-          </button>
-        </div>
-        <div class="composer-hint"><span>Answers use college-provided information only</span><span><kbd>Enter</kbd> to send <span class="hint-separator">·</span> <kbd>Shift + Enter</kbd> for a new line</span></div>
-      </form>
+        <main class="chat-messages" id="chatBox" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Chat messages">
+            <article class="message-row bot-row">
+                <div class="message bot-message">
+                    <p>Hello! 👋 Welcome to Campus Helpdesk.</p>
+                    <p>I am your campus helpdesk assistant.<br>Ask me anything about college life and student services.</p>
+                    <time class="message-time"></time>
+                </div>
+            </article>
+
+            <section class="faq-section" aria-labelledby="faq-heading">
+                <h2 class="quick-title" id="faq-heading">Frequently Asked Questions</h2>
+                <div id="quick-replies" class="quick-buttons" aria-label="Quick questions"></div>
+            </section>
+
+            <div id="typing-indicator" class="message-row bot-row typing-row" aria-label="Campus Helpdesk is typing" hidden>
+                <div class="typing-bubble" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </main>
+
+        <form class="chat-footer" id="chat-form">
+            <label class="visually-hidden" for="message-input">Your question</label>
+            <input
+                type="text"
+                id="message-input"
+                name="message"
+                maxlength="2000"
+                autocomplete="off"
+                placeholder="Type your question here..."
+                required
+            >
+            <button type="submit" id="send-button">Send <span aria-hidden="true">➤</span></button>
+        </form>
     </section>
-  </main>
 </body>
 </html>
