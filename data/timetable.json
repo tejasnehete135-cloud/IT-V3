@@ -1,0 +1,65 @@
+[
+  {
+    "id": "timetable_001",
+    "category": "timetable",
+    "keywords": ["weekly", "class", "schedule", "hours", "Monday", "Saturday"],
+    "question": "What are the weekly class hours?",
+    "answer": "Regular classes run Monday through Saturday, 9:00 AM-4:00 PM. Lunch break is 1:00-2:00 PM."
+  },
+  {
+    "id": "timetable_002",
+    "category": "timetable",
+    "keywords": ["Monday", "B.Sc.", "classes", "schedule"],
+    "question": "What is the Monday B.Sc. schedule?",
+    "answer": "Monday: Biology 9:00-10:00 AM, Chemistry 10:00-11:00 AM, Mathematics 11:00 AM-12:00 PM, and Biology lab 2:00-4:00 PM."
+  },
+  {
+    "id": "timetable_003",
+    "category": "timetable",
+    "keywords": ["Tuesday", "B.Tech", "classes", "schedule"],
+    "question": "What is the Tuesday B.Tech schedule?",
+    "answer": "Tuesday: Programming 9:00-10:00 AM, Engineering Mathematics 10:00-11:00 AM, Physics 11:00 AM-12:00 PM, and programming lab 2:00-4:00 PM."
+  },
+  {
+    "id": "timetable_004",
+    "category": "timetable",
+    "keywords": ["Wednesday", "MBA", "classes", "schedule"],
+    "question": "What is the Wednesday MBA schedule?",
+    "answer": "Wednesday: Marketing 9:00-10:00 AM, Accounting 10:00-11:00 AM, Business Communication 11:00 AM-12:00 PM, and case study seminar 2:00-4:00 PM."
+  },
+  {
+    "id": "timetable_005",
+    "category": "timetable",
+    "keywords": ["Thursday", "M.Sc.", "classes", "schedule"],
+    "question": "What is the Thursday M.Sc. schedule?",
+    "answer": "Thursday: Research Methods 9:00-10:00 AM, Data Analysis 10:00-11:00 AM, subject seminar 11:00 AM-12:00 PM, and research lab 2:00-4:00 PM."
+  },
+  {
+    "id": "timetable_006",
+    "category": "timetable",
+    "keywords": ["Friday", "lab", "practical", "schedule"],
+    "question": "When are department laboratory sessions?",
+    "answer": "Scheduled department laboratory sessions are generally held Friday 2:00-4:00 PM. Check the student portal for your section's assigned lab."
+  },
+  {
+    "id": "timetable_007",
+    "category": "timetable",
+    "keywords": ["library", "hours", "opening", "closing"],
+    "question": "What are the Campus Library hours?",
+    "answer": "The Campus Library is open Monday-Saturday, 8:00 AM-8:00 PM."
+  },
+  {
+    "id": "timetable_008",
+    "category": "timetable",
+    "keywords": ["holiday", "calendar", "closed", "schedule"],
+    "question": "Where can I find the holiday list?",
+    "answer": "The current academic holiday list is available in the Academic Calendar section of the student portal."
+  },
+  {
+    "id": "timetable_009",
+    "category": "timetable",
+    "keywords": ["section", "semester", "timetable", "portal"],
+    "question": "Where can I find my section timetable?",
+    "answer": "Sign in to the student portal and open Academics > Timetable to view your department, semester, and section schedule."
+  }
+]

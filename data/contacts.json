@@ -1,0 +1,65 @@
+[
+  {
+    "id": "contacts_001",
+    "category": "general",
+    "keywords": ["Campus Helpdesk", "general", "contact", "phone", "email"],
+    "question": "How can I contact the Campus Helpdesk?",
+    "answer": "Contact the Campus Helpdesk at helpdesk@campus.example or +1-555-0100. Office hours are Monday-Saturday, 9:00 AM-5:00 PM."
+  },
+  {
+    "id": "contacts_002",
+    "category": "general",
+    "keywords": ["admissions", "office", "email", "phone", "contact"],
+    "question": "How can I contact the Admissions Office?",
+    "answer": "Email admissions@campus.example or call +1-555-0101. The Admissions Office is in Welcome Center, Room 101."
+  },
+  {
+    "id": "contacts_003",
+    "category": "general",
+    "keywords": ["accounts", "fees", "payment", "email", "phone"],
+    "question": "How can I contact the Accounts Office?",
+    "answer": "Email accounts@campus.example or call +1-555-0102. The Accounts Office is in Administration Hall, Room 12."
+  },
+  {
+    "id": "contacts_004",
+    "category": "general",
+    "keywords": ["examination", "exam", "office", "email", "phone"],
+    "question": "How can I contact the Examination Office?",
+    "answer": "Email exams@campus.example or call +1-555-0103. The Examination Office is in Administration Hall, Room 14."
+  },
+  {
+    "id": "contacts_005",
+    "category": "general",
+    "keywords": ["placement", "career", "training", "email", "phone"],
+    "question": "How can I contact Career Services?",
+    "answer": "Email careers@campus.example or call +1-555-0104. Career Services is in Student Center, Room 20."
+  },
+  {
+    "id": "contacts_006",
+    "category": "general",
+    "keywords": ["hostel", "residence", "warden", "email", "phone"],
+    "question": "How can I contact the Residence Office?",
+    "answer": "Email residence@campus.example or call +1-555-0105. The Residence Office is next to the Campus residence reception."
+  },
+  {
+    "id": "contacts_007",
+    "category": "general",
+    "keywords": ["location", "address", "directions", "campus"],
+    "question": "Where is Campus located?",
+    "answer": "Campus is located at 100 Learning Way, Example City, EX 10000."
+  },
+  {
+    "id": "contacts_008",
+    "category": "general",
+    "keywords": ["office hours", "opening", "closing", "administration"],
+    "question": "What are the Campus office hours?",
+    "answer": "Campus administrative offices are open Monday-Saturday, 9:00 AM-5:00 PM."
+  },
+  {
+    "id": "contacts_009",
+    "category": "general",
+    "keywords": ["student", "support", "counseling", "wellbeing", "email"],
+    "question": "Where can students get support?",
+    "answer": "The Student Support Desk is in Student Center, Room 5. Email support@campus.example or call +1-555-0106."
+  }
+]

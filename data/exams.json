@@ -1,0 +1,65 @@
+[
+  {
+    "id": "exams_001",
+    "category": "exams",
+    "keywords": ["semester", "exam", "schedule", "dates", "December", "May"],
+    "question": "When are the semester examinations?",
+    "answer": "Autumn semester examinations are scheduled for December 1-15. Spring semester examinations are scheduled for May 1-15. The final timetable is posted on the student portal."
+  },
+  {
+    "id": "exams_002",
+    "category": "exams",
+    "keywords": ["internal", "assessment", "tests", "marks", "evaluation"],
+    "question": "What is the internal assessment pattern?",
+    "answer": "Internal assessment is 40% of the course grade: two tests contribute 15% each and coursework contributes 10%. The final examination contributes the remaining 60%."
+  },
+  {
+    "id": "exams_003",
+    "category": "exams",
+    "keywords": ["hall", "ticket", "download", "admit", "portal"],
+    "question": "How do I download my hall ticket?",
+    "answer": "Sign in to the student portal, open Examinations, and select Download Hall Ticket. Contact the Examination Office if the hall ticket is missing."
+  },
+  {
+    "id": "exams_004",
+    "category": "exams",
+    "keywords": ["passing", "pass", "marks", "minimum", "criteria"],
+    "question": "What are the passing criteria?",
+    "answer": "A student must earn at least 40% overall in each course and at least 35% in its final examination to pass."
+  },
+  {
+    "id": "exams_005",
+    "category": "exams",
+    "keywords": ["re-evaluation", "revaluation", "recheck", "answer script"],
+    "question": "How do I request exam re-evaluation?",
+    "answer": "Submit the Re-evaluation Request form through the student portal within 7 calendar days after results are published. The fee is Rs 500 per course."
+  },
+  {
+    "id": "exams_006",
+    "category": "exams",
+    "keywords": ["results", "declaration", "grade", "when"],
+    "question": "When are examination results declared?",
+    "answer": "Results are normally published within 30 days after the final examination for the semester."
+  },
+  {
+    "id": "exams_007",
+    "category": "exams",
+    "keywords": ["practical", "lab", "viva", "examination"],
+    "question": "How are practical examinations conducted?",
+    "answer": "Practical examinations are held in the course laboratory during the examination period and may include a demonstration, lab record review, and viva."
+  },
+  {
+    "id": "exams_008",
+    "category": "exams",
+    "keywords": ["identity card", "ID", "hall", "exam rules"],
+    "question": "What should I bring to the examination hall?",
+    "answer": "Bring your Campus identity card and downloaded hall ticket. The hall ticket lists any permitted examination materials."
+  },
+  {
+    "id": "exams_009",
+    "category": "exams",
+    "keywords": ["exam", "absence", "missed", "medical", "makeup"],
+    "question": "What if I miss an examination?",
+    "answer": "Submit supporting documentation to the Examination Office within 3 working days. The office will review the request under Campus examination rules."
+  }
+]

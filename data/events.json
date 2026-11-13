@@ -1,0 +1,65 @@
+[
+  {
+    "id": "events_001",
+    "category": "events",
+    "keywords": ["coding", "club", "programming", "join", "technology"],
+    "question": "How do I join the Coding Club?",
+    "answer": "The Coding Club meets Wednesdays at 4:15 PM in Student Center, Lab 2. Register through the student activities portal."
+  },
+  {
+    "id": "events_002",
+    "category": "events",
+    "keywords": ["music", "club", "choir", "practice", "join"],
+    "question": "How do I join the Music Club?",
+    "answer": "The Music Club rehearses Thursdays at 4:00 PM in Arts Room 3. New members can register through the student activities portal."
+  },
+  {
+    "id": "events_003",
+    "category": "events",
+    "keywords": ["sports", "club", "athletics", "team", "join"],
+    "question": "How do I join a sports club?",
+    "answer": "Sports club sign-ups take place at the Recreation Office during the first two weeks of each semester. Equipment and practice schedules are provided after registration."
+  },
+  {
+    "id": "events_004",
+    "category": "events",
+    "keywords": ["NSS", "volunteer", "community", "service", "club"],
+    "question": "How can I participate in community service?",
+    "answer": "Join the Campus Service Club through the student activities portal. The group holds a volunteer orientation on the first Friday of each month."
+  },
+  {
+    "id": "events_005",
+    "category": "events",
+    "keywords": ["annual", "fest", "festival", "celebration", "date"],
+    "question": "When is the annual Campus festival?",
+    "answer": "The annual Campus festival, Open Horizons, is scheduled for February 12-14. Event registration opens on the student activities portal."
+  },
+  {
+    "id": "events_006",
+    "category": "events",
+    "keywords": ["workshop", "technology", "seminar", "date"],
+    "question": "When is the next technology workshop?",
+    "answer": "The Student Technology Workshop is scheduled for October 8 at 2:00 PM in Innovation Lab 1. Registration is available through the student activities portal."
+  },
+  {
+    "id": "events_007",
+    "category": "events",
+    "keywords": ["placement", "career", "drive", "recruitment", "date"],
+    "question": "When does the placement drive begin?",
+    "answer": "The annual career and placement drive begins October 1. Eligible students can register with Career Services."
+  },
+  {
+    "id": "events_008",
+    "category": "events",
+    "keywords": ["club", "coordinator", "contact", "coding", "events"],
+    "question": "Who coordinates Campus clubs?",
+    "answer": "The Student Activities Coordinator, Alex Morgan, coordinates club registrations. Contact activities@campus.example or visit Student Center, Room 8."
+  },
+  {
+    "id": "events_009",
+    "category": "events",
+    "keywords": ["event", "calendar", "activities", "schedule", "portal"],
+    "question": "Where can I see the event calendar?",
+    "answer": "The Campus event calendar is posted in the student activities portal under Events."
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "fees_001",
+    "category": "fees",
+    "keywords": ["B.Sc.", "tuition", "annual", "fee", "Rs 45000"],
+    "question": "What is the annual B.Sc. tuition fee?",
+    "answer": "B.Sc. tuition is Rs 45,000 per year."
+  },
+  {
+    "id": "fees_002",
+    "category": "fees",
+    "keywords": ["B.Tech", "tuition", "annual", "fee", "Rs 85000"],
+    "question": "What is the annual B.Tech tuition fee?",
+    "answer": "B.Tech tuition is Rs 85,000 per year."
+  },
+  {
+    "id": "fees_003",
+    "category": "fees",
+    "keywords": ["MBA", "tuition", "annual", "fee", "Rs 110000"],
+    "question": "What is the annual MBA tuition fee?",
+    "answer": "MBA tuition is Rs 1,10,000 per year."
+  },
+  {
+    "id": "fees_004",
+    "category": "fees",
+    "keywords": ["hostel", "accommodation", "residence", "fee"],
+    "question": "What is the annual hostel fee?",
+    "answer": "The hostel fee is Rs 72,000 per year and includes shared accommodation. Meals are not included."
+  },
+  {
+    "id": "fees_005",
+    "category": "fees",
+    "keywords": ["library", "fee", "annual", "resources"],
+    "question": "What is the annual library fee?",
+    "answer": "The annual library fee is Rs 2,000."
+  },
+  {
+    "id": "fees_006",
+    "category": "fees",
+    "keywords": ["exam", "examination", "fee", "semester"],
+    "question": "What is the examination fee?",
+    "answer": "The examination fee is Rs 1,500 per semester."
+  },
+  {
+    "id": "fees_007",
+    "category": "fees",
+    "keywords": ["installment", "payment", "semester", "due", "tuition"],
+    "question": "Can I pay tuition in installments?",
+    "answer": "Tuition may be paid in two equal installments: the first before the semester begins and the second by November 30."
+  },
+  {
+    "id": "fees_008",
+    "category": "fees",
+    "keywords": ["late", "penalty", "fee", "overdue", "payment"],
+    "question": "What is the late-fee penalty?",
+    "answer": "A late payment penalty of Rs 100 per day applies after the published due date, up to a maximum of Rs 2,000."
+  },
+  {
+    "id": "fees_009",
+    "category": "fees",
+    "keywords": ["scholarship", "merit", "financial aid", "fee waiver"],
+    "question": "Are scholarships available?",
+    "answer": "Merit scholarships cover up to 25% of tuition for eligible students with at least 90% in their qualifying examination. Government aid may also be available to eligible applicants."
+  },
+  {
+    "id": "fees_010",
+    "category": "fees",
+    "keywords": ["refund", "withdrawal", "cancellation", "fees"],
+    "question": "What is the tuition refund policy?",
+    "answer": "For a written withdrawal received before the first day of classes, tuition is refunded in full less the application fee. After classes begin, refunds are calculated by the Campus Accounts Office under the published schedule."
+  }
+]
